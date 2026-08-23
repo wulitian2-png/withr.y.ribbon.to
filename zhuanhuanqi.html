@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
@@ -116,18 +116,21 @@
             background: rgba(255, 255, 255, 0.04);
             border-radius: 14px;
             padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.3s ease;
-            flex-wrap: wrap;
-            gap: 10px;
         }
 
         .file-item:hover {
             background: rgba(255, 255, 255, 0.07);
+        }
+
+        .file-item .file-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .file-item .info {
@@ -198,6 +201,11 @@
             animation: pulse 1s infinite;
         }
 
+        .badge.partial {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+
         @keyframes pulse {
             0%,
             100% {
@@ -206,6 +214,120 @@
             50% {
                 opacity: 0.5;
             }
+        }
+
+        /* 子文件列表 */
+        .mc-files {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: none;
+        }
+
+        .mc-files.show {
+            display: block;
+        }
+
+        .mc-file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .mc-file-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .mc-file-item .mc-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .mc-file-item .mc-info .mc-icon {
+            font-size: 18px;
+        }
+
+        .mc-file-item .mc-info .mc-name {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            word-break: break-all;
+        }
+
+        .mc-file-item .mc-info .mc-status {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .mc-file-item .mc-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 4px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .btn-sm:hover:not(:disabled) {
+            transform: translateY(-1px);
+        }
+
+        .btn-sm:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #34d399, #10b981);
+            color: #fff;
+        }
+
+        .btn-download:hover:not(:disabled) {
+            box-shadow: 0 4px 15px -3px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-download-all {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: #fff;
+        }
+
+        .btn-download-all:hover:not(:disabled) {
+            box-shadow: 0 4px 15px -3px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn-success-sm {
+            background: rgba(52, 211, 153, 0.15);
+            color: #34d399;
+        }
+
+        .btn-success-sm:hover:not(:disabled) {
+            background: rgba(52, 211, 153, 0.25);
+        }
+
+        .btn-error-sm {
+            background: rgba(251, 113, 133, 0.15);
+            color: #fb7185;
         }
 
         .btn-group {
@@ -247,16 +369,6 @@
             transform: none;
         }
 
-        .btn-success {
-            background: linear-gradient(135deg, #34d399, #10b981);
-            color: #fff;
-        }
-
-        .btn-success:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px -5px rgba(16, 185, 129, 0.4);
-        }
-
         .btn-danger {
             background: rgba(255, 255, 255, 0.06);
             color: rgba(255, 255, 255, 0.6);
@@ -265,15 +377,6 @@
         .btn-danger:hover {
             background: rgba(251, 113, 133, 0.2);
             color: #fb7185;
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.06);
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
         }
 
         .log-area {
@@ -391,6 +494,29 @@
             width: 0%;
         }
 
+        .empty-state {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 14px;
+        }
+
+        .toggle-files-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            font-size: 13px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-files-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
         @media (max-width: 640px) {
             .header h1 {
                 font-size: 24px;
@@ -416,6 +542,15 @@
 
             .stats {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .mc-file-item {
+                padding: 6px 10px;
+            }
+
+            .btn-sm {
+                font-size: 11px;
+                padding: 3px 10px;
             }
         }
     </style>
@@ -446,9 +581,6 @@
             <button class="btn btn-primary" id="convertBtn" disabled>
                 🔄 开始转换
             </button>
-            <button class="btn btn-success" id="downloadAllBtn" disabled>
-                📥 下载全部
-            </button>
             <button class="btn btn-danger" id="clearBtn">
                 🗑️ 清空
             </button>
@@ -471,12 +603,12 @@
                 this.files = [];
                 this.results = [];
                 this.isProcessing = false;
+                this.expandedArchives = new Set();
 
                 this.dropZone = document.getElementById('dropZone');
                 this.fileInput = document.getElementById('fileInput');
                 this.fileList = document.getElementById('fileList');
                 this.convertBtn = document.getElementById('convertBtn');
-                this.downloadAllBtn = document.getElementById('downloadAllBtn');
                 this.clearBtn = document.getElementById('clearBtn');
                 this.logArea = document.getElementById('logArea');
                 this.stats = document.getElementById('stats');
@@ -515,10 +647,6 @@
                     this.convertAll();
                 });
 
-                this.downloadAllBtn.addEventListener('click', () => {
-                    this.downloadAll();
-                });
-
                 this.clearBtn.addEventListener('click', () => {
                     this.clearAll();
                 });
@@ -539,7 +667,6 @@
                     this.files.push(...validFiles);
                     this.renderFileList();
                     this.convertBtn.disabled = false;
-                    this.downloadAllBtn.disabled = true;
                     this.addLog(`📥 添加 ${validFiles.length} 个压缩包`, 'info');
                 }
             }
@@ -551,7 +678,10 @@
                 }
 
                 this.fileList.classList.add('show');
-                this.fileList.innerHTML = this.files.map((file, index) => {
+                let html = '';
+
+                for (let i = 0; i < this.files.length; i++) {
+                    const file = this.files[i];
                     const size = (file.size / 1024).toFixed(1);
                     const status = file.status || 'waiting';
                     const statusMap = {
@@ -564,23 +694,100 @@
                     };
                     const st = statusMap[status] || statusMap.waiting;
 
-                    const mcCount = file.mcFiles ? file.mcFiles.length : 0;
+                    const mcFiles = file.mcFiles || [];
+                    const hasResults = this.results[i] && this.results[i].files;
+                    const successCount = hasResults ? this.results[i].files.length : 0;
+                    const totalCount = mcFiles.length;
 
-                    return `
-                            <div class="file-item" data-index="${index}">
-                                <div class="info">
-                                    <span class="file-icon">📦</span>
-                                    <div>
-                                        <div class="file-name">${file.name}</div>
-                                        <div class="file-size">${size} KB · ${mcCount > 0 ? mcCount + ' 个 .mc 文件' : '等待解压'}</div>
+                    const isExpanded = this.expandedArchives.has(i);
+
+                    html += `
+                            <div class="file-item" data-index="${i}">
+                                <div class="file-header">
+                                    <div class="info">
+                                        <span class="file-icon">📦</span>
+                                        <div>
+                                            <div class="file-name">${file.name}</div>
+                                            <div class="file-size">${size} KB · ${totalCount > 0 ? totalCount + ' 个 .mc 文件' : '等待解压'}</div>
+                                        </div>
+                                    </div>
+                                    <div class="status">
+                                        <span class="badge ${st.class}">${st.text}</span>
+                                        ${totalCount > 0 ? `<button class="toggle-files-btn" onclick="window.converter.toggleArchive(${i})">${isExpanded ? '📂 收起' : '📂 展开'}</button>` : ''}
                                     </div>
                                 </div>
-                                <div class="status">
-                                    <span class="badge ${st.class}">${st.text}</span>
+                                <div class="mc-files ${isExpanded ? 'show' : ''}" id="mc-files-${i}">
+                                    ${this.renderMcFiles(i)}
                                 </div>
                             </div>
                         `;
-                }).join('');
+                }
+
+                this.fileList.innerHTML = html;
+            }
+
+            renderMcFiles(index) {
+                const file = this.files[index];
+                const mcFiles = file.mcFiles || [];
+                const result = this.results[index];
+
+                if (mcFiles.length === 0) {
+                    return `<div class="empty-state">没有找到 .mc 文件</div>`;
+                }
+
+                let html = '';
+                for (let j = 0; j < mcFiles.length; j++) {
+                    const mcFile = mcFiles[j];
+                    const converted = result && result.files && result.files[j];
+
+                    const statusText = converted ? '✅ 已转换' : '⏳ 待转换';
+                    const statusColor = converted ? '#34d399' : 'rgba(255,255,255,0.3)';
+
+                    html += `
+                            <div class="mc-file-item">
+                                <div class="mc-info">
+                                    <span class="mc-icon">🎵</span>
+                                    <span class="mc-name">${mcFile.name}</span>
+                                    <span class="mc-status" style="color: ${statusColor}">${statusText}</span>
+                                </div>
+                                <div class="mc-actions">
+                                    ${converted ? `
+                                        <button class="btn-sm btn-download" onclick="window.converter.downloadSingle(${index}, ${j})">
+                                            📥 下载
+                                        </button>
+                                        <button class="btn-sm btn-success-sm" onclick="window.converter.showPreview(${index}, ${j})">
+                                            👁️ 预览
+                                        </button>
+                                    ` : `
+                                        <span style="color:rgba(255,255,255,0.2);font-size:12px;">等待转换...</span>
+                                    `}
+                                </div>
+                            </div>
+                        `;
+                }
+
+                // 如果有多个文件，添加"下载全部"按钮
+                const resultFiles = result ? result.files || [] : [];
+                if (resultFiles.length > 1) {
+                    html += `
+                            <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:flex-end;">
+                                <button class="btn-sm btn-download-all" onclick="window.converter.downloadArchiveAll(${index})">
+                                    📥 下载此压缩包全部 (${resultFiles.length}个)
+                                </button>
+                            </div>
+                        `;
+                }
+
+                return html;
+            }
+
+            toggleArchive(index) {
+                if (this.expandedArchives.has(index)) {
+                    this.expandedArchives.delete(index);
+                } else {
+                    this.expandedArchives.add(index);
+                }
+                this.renderFileList();
             }
 
             updateFileStatus(index, status, mcFiles = null) {
@@ -597,7 +804,6 @@
 
                 this.isProcessing = true;
                 this.convertBtn.disabled = true;
-                this.downloadAllBtn.disabled = true;
                 this.clearLog();
                 this.results = [];
 
@@ -613,11 +819,9 @@
                     this.addLog(`📦 正在解压: ${file.name}`, 'info');
 
                     try {
-                        // 读取并解压
                         const zipData = await this.readFile(file);
                         const zip = await JSZip.loadAsync(zipData);
 
-                        // 查找 .mc 文件
                         const mcFiles = [];
                         for (const [path, zipEntry] of Object.entries(zip.files)) {
                             if (path.endsWith('.mc') && !zipEntry.dir) {
@@ -640,35 +844,42 @@
                         this.addLog(`📄 找到 ${mcFiles.length} 个 .mc 文件`, 'info');
                         this.updateFileStatus(i, 'processing', mcFiles);
 
-                        // 转换每个 .mc 文件
                         const convertedResults = [];
                         for (const mcFile of mcFiles) {
                             try {
                                 const result = this.convertMCContent(mcFile.content, mcFile.name);
                                 convertedResults.push({
                                     name: mcFile.name,
-                                    data: result,
-                                    originalName: file.name
+                                    data: result
                                 });
                                 this.addLog(`✅ 转换成功: ${mcFile.name}`, 'success');
                             } catch (error) {
                                 this.addLog(`❌ 转换失败: ${mcFile.name} - ${error.message}`, 'error');
+                                convertedResults.push({
+                                    name: mcFile.name,
+                                    data: null,
+                                    error: error.message
+                                });
                             }
                         }
 
-                        if (convertedResults.length > 0) {
-                            this.results.push({
-                                archiveName: file.name,
-                                files: convertedResults
-                            });
-                            this.updateFileStatus(i, 'success');
-                            this.downloadAllBtn.disabled = false;
+                        this.results[i] = {
+                            archiveName: file.name,
+                            files: convertedResults
+                        };
 
-                            // 显示统计
-                            this.showStats(convertedResults);
+                        const successCount = convertedResults.filter(r => r.data !== null).length;
+                        if (successCount === convertedResults.length) {
+                            this.updateFileStatus(i, 'success');
+                        } else if (successCount > 0) {
+                            this.updateFileStatus(i, 'partial');
                         } else {
                             this.updateFileStatus(i, 'error');
                         }
+
+                        // 自动展开
+                        this.expandedArchives.add(i);
+                        this.showStats();
 
                     } catch (error) {
                         this.addLog(`❌ 解压失败: ${file.name} - ${error.message}`, 'error');
@@ -679,7 +890,7 @@
                     this.updateProgress(completed, totalFiles);
                 }
 
-                this.addLog(`📊 处理完成! 成功: ${this.results.length}/${this.files.length} 个压缩包`, 'info');
+                this.addLog(`📊 处理完成!`, 'info');
                 this.isProcessing = false;
                 this.convertBtn.disabled = this.files.length === 0;
 
@@ -766,7 +977,6 @@
 
                 notes.sort((a, b) => a.time - b.time);
 
-                // 处理和弦
                 const notesByTime = {};
                 for (const note of notes) {
                     const key = note.time;
@@ -889,17 +1099,22 @@
                 return result;
             }
 
-            showStats(results) {
+            showStats() {
                 this.stats.classList.add('show');
                 let totalNotes = 0;
                 let totalChords = 0;
                 let totalFiles = 0;
+                let successFiles = 0;
 
-                for (const result of results) {
-                    totalFiles++;
-                    if (result.data && result.data.notes) {
-                        totalNotes += result.data.notes.length;
-                        totalChords += result.data.notes.filter(n => n.gesture === 'chord').length;
+                for (const result of this.results) {
+                    if (!result) continue;
+                    for (const file of result.files || []) {
+                        if (file.data && file.data.notes) {
+                            totalFiles++;
+                            successFiles++;
+                            totalNotes += file.data.notes.length;
+                            totalChords += file.data.notes.filter(n => n.gesture === 'chord').length;
+                        }
                     }
                 }
 
@@ -917,40 +1132,55 @@
                             <div class="stat-label">和弦音符</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-value">${results.length > 0 ? results[0].data.bpm : '-'}</div>
+                            <div class="stat-value">${this.results.length > 0 && this.results[0] && this.results[0].files && this.results[0].files.length > 0 && this.results[0].files[0].data ? this.results[0].files[0].data.bpm : '-'}</div>
                             <div class="stat-label">BPM</div>
                         </div>
                     `;
             }
 
-            downloadAll() {
-                if (this.results.length === 0) return;
+            downloadSingle(archiveIndex, fileIndex) {
+                const result = this.results[archiveIndex];
+                if (!result) return;
 
-                // 如果只有一个文件，直接下载
-                if (this.results.length === 1 && this.results[0].files.length === 1) {
-                    this.downloadFile(this.results[0].files[0].data, this.results[0].files[0].name);
+                const file = result.files[fileIndex];
+                if (!file || !file.data) return;
+
+                this.downloadFile(file.data, file.name);
+            }
+
+            downloadArchiveAll(archiveIndex) {
+                const result = this.results[archiveIndex];
+                if (!result) return;
+
+                const files = result.files || [];
+                const validFiles = files.filter(f => f.data !== null);
+
+                if (validFiles.length === 0) {
+                    this.addLog('⚠️ 没有可下载的文件', 'warning');
                     return;
                 }
 
-                // 多个文件打包下载
+                if (validFiles.length === 1) {
+                    this.downloadFile(validFiles[0].data, validFiles[0].name);
+                    return;
+                }
+
                 const zip = new JSZip();
-                for (const archive of this.results) {
-                    for (const file of archive.files) {
-                        const name = file.name.replace(/\.mc$/, '') + '_converted.json';
-                        zip.file(name, JSON.stringify(file.data, null, 2));
-                    }
+                for (const file of validFiles) {
+                    const name = file.name.replace(/\.mc$/, '') + '_converted.json';
+                    zip.file(name, JSON.stringify(file.data, null, 2));
                 }
 
                 zip.generateAsync({ type: 'blob' }).then((blob) => {
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = `converted_谱面合集_${Date.now()}.zip`;
+                    a.download = `${result.archiveName.replace(/\.[^.]+$/, '')}_谱面合集.zip`;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
-                    this.addLog(`📥 已下载全部 ${this.results.length} 个谱面文件`, 'success');
+                    this.addLog(`📥 已下载: ${a.download}`, 'success');
                 });
             }
 
@@ -967,6 +1197,113 @@
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
                 this.addLog(`📥 已下载: ${a.download}`, 'success');
+            }
+
+            showPreview(archiveIndex, fileIndex) {
+                const result = this.results[archiveIndex];
+                if (!result) return;
+
+                const file = result.files[fileIndex];
+                if (!file || !file.data) return;
+
+                const jsonStr = JSON.stringify(file.data, null, 2);
+
+                // 创建预览窗口
+                const overlay = document.createElement('div');
+                overlay.style.cssText = `
+                        position: fixed;
+                        top: 0; left: 0;
+                        width: 100%; height: 100%;
+                        background: rgba(0,0,0,0.8);
+                        backdrop-filter: blur(10px);
+                        z-index: 9999;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 20px;
+                    `;
+
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                        background: #1a1a2e;
+                        border-radius: 16px;
+                        max-width: 800px;
+                        width: 100%;
+                        max-height: 80vh;
+                        display: flex;
+                        flex-direction: column;
+                        border: 1px solid rgba(255,255,255,0.1);
+                        overflow: hidden;
+                    `;
+
+                const header = document.createElement('div');
+                header.style.cssText = `
+                        padding: 16px 20px;
+                        border-bottom: 1px solid rgba(255,255,255,0.05);
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        flex-shrink: 0;
+                    `;
+                header.innerHTML = `
+                        <span style="color:#fff;font-weight:600;">📄 ${file.name.replace(/\.mc$/, '')}_converted.json</span>
+                        <button style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:24px;cursor:pointer;">✕</button>
+                    `;
+
+                const body = document.createElement('div');
+                body.style.cssText = `
+                        padding: 16px 20px;
+                        overflow-y: auto;
+                        flex: 1;
+                    `;
+
+                const pre = document.createElement('pre');
+                pre.style.cssText = `
+                        color: rgba(255,255,255,0.8);
+                        font-size: 12px;
+                        font-family: 'JetBrains Mono', monospace;
+                        white-space: pre-wrap;
+                        word-break: break-all;
+                        margin: 0;
+                        line-height: 1.6;
+                    `;
+                pre.textContent = jsonStr;
+                body.appendChild(pre);
+
+                const footer = document.createElement('div');
+                footer.style.cssText = `
+                        padding: 12px 20px;
+                        border-top: 1px solid rgba(255,255,255,0.05);
+                        display: flex;
+                        justify-content: flex-end;
+                        flex-shrink: 0;
+                    `;
+                footer.innerHTML = `
+                        <button style="padding:8px 20px;border:none;border-radius:8px;background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff;font-weight:600;cursor:pointer;">关闭</button>
+                    `;
+
+                modal.appendChild(header);
+                modal.appendChild(body);
+                modal.appendChild(footer);
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+
+                // 关闭事件
+                const close = () => document.body.removeChild(overlay);
+                header.querySelector('button').addEventListener('click', close);
+                footer.querySelector('button').addEventListener('click', close);
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) close();
+                });
+
+                // ESC 关闭
+                const escHandler = (e) => {
+                    if (e.key === 'Escape') {
+                        close();
+                        document.removeEventListener('keydown', escHandler);
+                    }
+                };
+                document.addEventListener('keydown', escHandler);
             }
 
             addLog(message, type = 'info') {
@@ -987,9 +1324,9 @@
             clearAll() {
                 this.files = [];
                 this.results = [];
+                this.expandedArchives.clear();
                 this.renderFileList();
                 this.convertBtn.disabled = true;
-                this.downloadAllBtn.disabled = true;
                 this.clearLog();
                 this.progressBar.classList.remove('show');
                 this.progressFill.style.width = '0%';
@@ -999,7 +1336,7 @@
 
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
-            new MCZConverter();
+            window.converter = new MCZConverter();
         });
     </script>
 </body>
