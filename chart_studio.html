@@ -159,6 +159,7 @@ audio { width:100%; height:42px; }
             <label>检测灵敏度<select id="sensitivity"><option value="low">低</option><option value="medium" selected>中</option><option value="high">高</option></select></label>
           </div>
           <button id="alignBtn" class="small-btn" type="button" style="width:100%;margin-top:10px;">智能对齐全部音符（聚类 + 偏移修正 + 重复段统一）</button>
+          <button id="genGridBtn" class="small-btn" type="button" style="width:100%;margin-top:8px;background:var(--teal);color:#fff;">按当前 BPM 生成节拍线</button>
           <div id="analyzeResult" class="info-box" style="display:none"></div>
           <div class="warn">导出的 MIDI 会把 offset 加到音符时间上；JSON 保留原始 time + offset 结构。MIDI 生成与解析完全在浏览器内完成，无需后端。</div>
         </div>
@@ -673,15 +674,15 @@ async function analyzeAudio() {
 
     // Generate beat markers
     beatMarkers = [];
-    if (filteredPeaks.length > 0) {
-      const startTime = filteredPeaks[0].time;
-      const beatInterval = 60 / estimatedBPM;
-      const duration = buffer.duration;
-      for (let t = startTime; t < duration; t += beatInterval) {
-        const beatNum = Math.round((t - startTime) / beatInterval);
-        const isStrong = beatNum % 4 === 0;
-        beatMarkers.push({ time: t, strength: isStrong ? 2 : 1 });
-      }
+    const beatInterval = 60 / estimatedBPM;
+    const duration = buffer.duration;
+    const offset = Number($('offset').value) || 0;
+    // 从第一个峰值或 offset 开始
+    const startTime = filteredPeaks.length > 0 ? filteredPeaks[0].time : (offset >= 0 ? offset : 0);
+    for (let t = startTime; t < duration; t += beatInterval) {
+      const beatNum = Math.round((t - startTime) / beatInterval);
+      const isStrong = beatNum % 4 === 0;
+      beatMarkers.push({ time: t, strength: isStrong ? 2 : 1 });
     }
 
     $('bpm').value = estimatedBPM;
@@ -698,6 +699,28 @@ async function analyzeAudio() {
   }
 }
 $('analyzeBtn').addEventListener('click', analyzeAudio);
+
+// ==================== Manual Beat Grid Generation ====================
+function generateBeatGridFromBPM() {
+  const bpm = Math.max(1, Number($('bpm').value) || 120);
+  const duration = audio.duration || 300;
+  beatMarkers = [];
+  const beatInterval = 60 / bpm;
+  // 从 offset 开始，或者从 0 开始
+  const offset = Number($('offset').value) || 0;
+  const startTime = offset >= 0 ? offset : 0;
+  for (let t = startTime; t < duration; t += beatInterval) {
+    const beatNum = Math.round((t - startTime) / beatInterval);
+    const isStrong = beatNum % 4 === 0;
+    beatMarkers.push({ time: t, strength: isStrong ? 2 : 1 });
+  }
+  const resultBox = $('analyzeResult');
+  resultBox.style.display = 'block';
+  resultBox.innerHTML = '已按 <strong>' + bpm + ' BPM</strong> 生成节拍线，共 ' + beatMarkers.length + ' 拍';
+  setStatus('已按 ' + bpm + ' BPM 生成节拍线');
+  renderAll();
+}
+$('genGridBtn').addEventListener('click', generateBeatGridFromBPM);
 
 // ==================== MIDI Generation (pure JS, zero deps) ====================
 const TPQ = 480;
@@ -1118,7 +1141,13 @@ audio.addEventListener('pause', () => {
   setStatus('已暂停，可以定位或导出');
 });
 
-fields.forEach(id => $(id).addEventListener('change', saveDraft));
+fields.forEach(id => {
+  if (id === 'bpm') {
+    $(id).addEventListener('change', () => { saveDraft(); generateBeatGridFromBPM(); });
+  } else {
+    $(id).addEventListener('change', saveDraft);
+  }
+});
 
 function animationLoop() {
   $('clock').textContent = formatTime(currentTime());
