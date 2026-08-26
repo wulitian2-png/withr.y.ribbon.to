@@ -554,6 +554,7 @@
             }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     <div class="container">
@@ -975,7 +976,7 @@
                     });
                 }
 
-                notes.sort((a, b) => a.time - b.time);
+                notes.sort((a, b) => b.time - a.time);
 
                 const notesByTime = {};
                 for (const note of notes) {
