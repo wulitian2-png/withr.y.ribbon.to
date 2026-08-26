@@ -555,6 +555,7 @@
         }
     </style>
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
     <div class="container">
@@ -947,7 +948,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
                 const beatDuration = 60.0 / bpm;
 
-                let offset = -0.207;
+                let offset = 0;
                 let audioFile = 'song.mp3';
                 for (const item of data.note || []) {
                     if (item.type === 1) {
@@ -976,8 +977,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                         duration = endSec - timeSec;
                     }
 
-                    const pitch = column === 1 ? 76 : 67;
-                    const tier = column === 1 ? 'high' : 'low';
+                    // Malody column: 1=左轨(low), 2=右轨(high)
+                    const pitch = column === 1 ? 67 : 76;
+                    const tier = column === 1 ? 'low' : 'high';
+                    const lane = column === 1 ? 2 : 1;
 
                     notes.push({
                         time: Math.round(timeSec * 1000000) / 1000000,
@@ -985,11 +988,17 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                         pitch: pitch,
                         type: 'normal',
                         tier: tier,
-                        lane: column
+                        lane: lane
                     });
                 }
 
                 notes.sort((a, b) => a.time - b.time);
+
+                // 动态计算谱面总时长
+                const lastNoteEnd = notes.length > 0 
+                    ? Math.max(...notes.map(n => n.time + n.duration)) 
+                    : 0;
+                const totalDuration = lastNoteEnd + Math.abs(offset) + 3.0;
 
                 const notesByTime = {};
                 for (const note of notes) {
@@ -1021,7 +1030,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                     bpm: bpm,
                     audioSrc: `assets/audio/${audioFile}`,
                     offset: offset,
-                    duration: 83.414634,
+                    duration: totalDuration,
                     notes: resultNotes,
                     backgroundShiftPoints: [],
                     characterSwitchPoints: [],
@@ -1033,8 +1042,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
             beatToSeconds(beat, beatDuration) {
                 if (Array.isArray(beat) && beat.length >= 3) {
-                    const [bar, beatNum, division] = beat;
-                    const totalBeats = bar * 4 + beatNum + division / 4.0;
+                    const [measure, offset, denominator] = beat;
+                    // Malody .mc 格式: beat[0] 为拍数(四分音符)，beat[1]/beat[2] 为附加拍
+                    // 不是小节号，因此不需要 *4
+                    const totalBeats = measure + offset / denominator;
                     return totalBeats * beatDuration;
                 }
                 return 0;
